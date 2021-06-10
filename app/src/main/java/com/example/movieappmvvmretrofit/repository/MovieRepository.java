@@ -32,4 +32,11 @@ public class MovieRepository {
     public LiveData<List<MovieModel>> getMovies(){
         return  movieApiClient.getMovies();
     }
+
+    /**2**/
+    //calling the method from MovieApiClient
+    public void searchmovieApi(String query,int pageNumber){
+        movieApiClient.searchMovieApi(query,pageNumber);
+    }
+
 }

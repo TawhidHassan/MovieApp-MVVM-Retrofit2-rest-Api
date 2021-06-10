@@ -48,6 +48,8 @@ public class MovieApiClient {
     }
 
 
+    /**1**/
+    //this method that we are going to call through the classes
     public void searchMovieApi(String query, int pageNumber) {
 
         if (retrieveMoviesRunable!=null){

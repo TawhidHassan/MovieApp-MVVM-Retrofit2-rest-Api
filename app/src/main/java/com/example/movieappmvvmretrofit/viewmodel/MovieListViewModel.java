@@ -31,6 +31,12 @@ public class MovieListViewModel extends ViewModel {
         return movieRepository.getMovies();
     }
 
+    /**3**/
+    //calling method in viewmodel
+    public void searchMovieApi(String query,int pageNumber){
+        movieRepository.searchmovieApi(query,pageNumber);
+    }
+
 
 
 }

@@ -39,11 +39,14 @@ public class MovieListActivity extends AppCompatActivity {
 
        movieListViewModel= new ViewModelProvider(this).get(MovieListViewModel.class);
 
+       //calling the observers
+        ObserveAnyChange();
 
+       //testing the methods
        btn.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-               GetRetrofitResponseAccordingToId();
+               searchMovieApi("jack",1);
            }
        });
     }
@@ -54,79 +57,92 @@ public class MovieListActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<MovieModel> movieModels) {
                 //observing any data chnage
-            }
-        });
-    }
-
-
-    private void getRetrofitResponse() {
-        MovieApi movieApi= Servicey.getMovieApi();
-
-        Call<MovieSearchResponse> responseCall=movieApi
-                .searchMovie(
-                        Credentials.API_KEY,
-                        "ack",
-                        1
-                );
-
-        responseCall.enqueue(new Callback<MovieSearchResponse>() {
-            @Override
-            public void onResponse(Call<MovieSearchResponse> call, Response<MovieSearchResponse> response) {
-                if (response.code()==200)
-                {
-                    Log.v("Tag","this response:"+response.body().toString());
-
-                    List<MovieModel> movies=new ArrayList<>(response.body().getMovies());
-                    for (MovieModel movie : movies){
-                        Log.v("Tag","the list "+movie.getRelease_date());
-                    }
-                }else
-                {
-                    try {
-                        Log.v("Tag","rerror"+response.errorBody().toString());
-                    }catch (Exception e){
-
+                if (movieModels!=null){
+                    for (MovieModel movieModel:movieModels){
+                        //getting the data bin the log
+                        Log.v("Tag","onChanged "+movieModel.getTitle());
                     }
                 }
 
             }
-
-            @Override
-            public void onFailure(Call<MovieSearchResponse> call, Throwable t) {
-
-            }
         });
     }
 
-
-    private void GetRetrofitResponseAccordingToId(){
-        MovieApi movieApi=Servicey.getMovieApi();
-
-        Call<MovieModel> responseCallSeasrch=movieApi.searchMoviebyId(
-                550,
-                Credentials.API_KEY
-        );
-
-        responseCallSeasrch.enqueue(new Callback<MovieModel>() {
-            @Override
-            public void onResponse(Call<MovieModel> call, Response<MovieModel> response) {
-                if (response.code()==200){
-                    MovieModel movie=response.body();
-                    Log.v("Tag",movie.getTitle());
-                }else {
-                    try {
-                        Log.v("Tag","error "+response.errorBody().toString());
-                    }catch (Exception e){
-                       e.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MovieModel> call, Throwable t) {
-
-            }
-        });
-
+    /**4**/
+    private void searchMovieApi(String query,int pageNumber){
+        movieListViewModel.searchMovieApi(query,pageNumber);
     }
+
+
+
+//    private void getRetrofitResponse() {
+//        MovieApi movieApi= Servicey.getMovieApi();
+//
+//        Call<MovieSearchResponse> responseCall=movieApi
+//                .searchMovie(
+//                        Credentials.API_KEY,
+//                        "ack",
+//                        1
+//                );
+//
+//        responseCall.enqueue(new Callback<MovieSearchResponse>() {
+//            @Override
+//            public void onResponse(Call<MovieSearchResponse> call, Response<MovieSearchResponse> response) {
+//                if (response.code()==200)
+//                {
+//                    Log.v("Tag","this response:"+response.body().toString());
+//
+//                    List<MovieModel> movies=new ArrayList<>(response.body().getMovies());
+//                    for (MovieModel movie : movies){
+//                        Log.v("Tag","the list "+movie.getRelease_date());
+//                    }
+//                }else
+//                {
+//                    try {
+//                        Log.v("Tag","rerror"+response.errorBody().toString());
+//                    }catch (Exception e){
+//
+//                    }
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<MovieSearchResponse> call, Throwable t) {
+//
+//            }
+//        });
+//    }
+//    private void GetRetrofitResponseAccordingToId(){
+//        MovieApi movieApi=Servicey.getMovieApi();
+//
+//        Call<MovieModel> responseCallSeasrch=movieApi.searchMoviebyId(
+//                550,
+//                Credentials.API_KEY
+//        );
+//
+//        responseCallSeasrch.enqueue(new Callback<MovieModel>() {
+//            @Override
+//            public void onResponse(Call<MovieModel> call, Response<MovieModel> response) {
+//                if (response.code()==200){
+//                    MovieModel movie=response.body();
+//                    Log.v("Tag",movie.getTitle());
+//                }else {
+//                    try {
+//                        Log.v("Tag","error "+response.errorBody().toString());
+//                    }catch (Exception e){
+//                       e.printStackTrace();
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<MovieModel> call, Throwable t) {
+//
+//            }
+//        });
+//
+//    }
+
+
 }
