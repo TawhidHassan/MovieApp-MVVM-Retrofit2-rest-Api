@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.movieappmvvmretrofit.models.MovieModel;
+import com.example.movieappmvvmretrofit.repository.MovieRepository;
 
 import java.util.List;
 
@@ -16,19 +17,18 @@ public class MovieListViewModel extends ViewModel {
 
     //this class is used for view Model
 
-    //LiveData
-    MutableLiveData<List<MovieModel>> mMovies=new MutableLiveData<>();
+    private MovieRepository movieRepository;
 
 
 
     //constructor
     public MovieListViewModel() {
-
+        movieRepository=MovieRepository.getInstance();
     }
 
 
     public LiveData<List<MovieModel>> getMovies(){
-        return mMovies;
+        return movieRepository.getMovies();
     }
 
 
