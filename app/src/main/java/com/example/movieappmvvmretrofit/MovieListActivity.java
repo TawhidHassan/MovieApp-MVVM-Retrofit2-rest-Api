@@ -25,6 +25,9 @@ import retrofit2.Response;
 
 public class MovieListActivity extends AppCompatActivity {
 
+     //Sefore we run our app ,we need to add the network security config
+
+
     Button btn;
 
     //viewModel

@@ -19,6 +19,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MovieApiClient {
@@ -66,7 +67,7 @@ public class MovieApiClient {
                 /** canceling the retrofit call**/
                 myHandler.cancel(true);
             }
-        }, 5000, TimeUnit.MICROSECONDS);
+        }, 300, TimeUnit.MILLISECONDS);
 
     }
 
@@ -91,29 +92,46 @@ public class MovieApiClient {
 
             //geting the response mobject
             try{
-                Response response=getMovies(query,pageNumber).execute();
-                if (cancelRequest) {
-                    return;
-                }
-                if (response.code()==200){
-                    List<MovieModel>list=new ArrayList<>(((MovieSearchResponse)response.body()).getMovies());
-                    if (pageNumber==1){
-                        //sending data to live data
-                        //postValue : used for background thread
-                        //setValue : not for background thread
-                        mMovies.postValue(list);
-                    }else {
-                        List<MovieModel>currentMovires=mMovies.getValue();
-                        currentMovires.addAll(list);
-                        mMovies.postValue(currentMovires);
-                    }
-                }else {
-                    String error=response.errorBody().toString();
-                    Log.v("tag","error: "+error);
-                    mMovies.postValue(null);
-                }
 
-            } catch (IOException e) {
+                MovieApi movieApi= Servicey.getMovieApi();
+                Call<MovieSearchResponse> responseCall=movieApi
+                        .searchMovie(
+                                Credentials.API_KEY,
+                                query,
+                                pageNumber
+                        );
+                responseCall.enqueue(new Callback<MovieSearchResponse>() {
+                    @Override
+                    public void onResponse(Call<MovieSearchResponse> call, Response<MovieSearchResponse> response) {
+                        if (cancelRequest) {
+                            return;
+                        }
+                        if (response.code()==200){
+                            List<MovieModel>list=new ArrayList<>(response.body().getMovies());
+                            if (pageNumber==1){
+                                //sending data to live data
+                                //postValue : used for background thread
+                                //setValue : not for background thread
+                                mMovies.postValue(list);
+                            }else {
+                                List<MovieModel>currentMovires=mMovies.getValue();
+                                currentMovires.addAll(list);
+                                mMovies.postValue(currentMovires);
+                            }
+                        }else {
+                            String error=response.errorBody().toString();
+                            Log.v("tag","error: "+error);
+                            mMovies.postValue(null);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<MovieSearchResponse> call, Throwable t) {
+
+                    }
+                });
+
+            } catch (Exception e) {
                 e.printStackTrace();
                 mMovies.postValue(null);
             }

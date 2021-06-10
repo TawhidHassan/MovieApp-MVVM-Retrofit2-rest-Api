@@ -14,8 +14,10 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
+        android:networkSecurityConfig="@xml/network_security_config"
         tools:ignore="GoogleAppIndexingWarning"
-        android:theme="@style/Theme.MovieAppMvvMRetrofit">
+        android:theme="@style/Theme.MovieAppMvvMRetrofit"
+        tools:targetApi="n">
         <activity android:name=".MovieListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
