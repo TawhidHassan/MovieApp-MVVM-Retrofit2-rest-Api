@@ -3,14 +3,17 @@ package com.example.movieappmvvmretrofit.repository;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.movieappmvvmretrofit.Utils.MovieApi;
 import com.example.movieappmvvmretrofit.models.MovieModel;
+import com.example.movieappmvvmretrofit.request.MovieApiClient;
 
 import java.util.List;
 
 public class MovieRepository {
     //this class acting as repository
-
     private static MovieRepository instance;
+
+    private MovieApiClient movieApiClient;
 
     public static MovieRepository getInstance(){
         if (instance==null){
@@ -21,15 +24,12 @@ public class MovieRepository {
     }
 
     //LiveData
-    private MutableLiveData<List<MovieModel>> mMovies;
 
     private MovieRepository(){
-        mMovies=new MutableLiveData<>();
+        movieApiClient= MovieApiClient.getInstance();
     }
 
     public LiveData<List<MovieModel>> getMovies(){
-        return  mMovies;
+        return  movieApiClient.getMovies();
     }
-
-
 }
