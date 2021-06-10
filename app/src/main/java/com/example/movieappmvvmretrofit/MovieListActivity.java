@@ -66,7 +66,7 @@ public class MovieListActivity extends AppCompatActivity {
                 .searchMovie(
                         Credentials.API_KEY,
                         "ack",
-                        "1"
+                        1
                 );
 
         responseCall.enqueue(new Callback<MovieSearchResponse>() {
