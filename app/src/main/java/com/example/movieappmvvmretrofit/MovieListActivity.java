@@ -1,6 +1,8 @@
 package com.example.movieappmvvmretrofit;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +14,7 @@ import com.example.movieappmvvmretrofit.Utils.MovieApi;
 import com.example.movieappmvvmretrofit.models.MovieModel;
 import com.example.movieappmvvmretrofit.request.Servicey;
 import com.example.movieappmvvmretrofit.response.MovieSearchResponse;
+import com.example.movieappmvvmretrofit.viewmodel.MovieListViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,12 +27,19 @@ public class MovieListActivity extends AppCompatActivity {
 
     Button btn;
 
+    //viewModel
+    private MovieListViewModel movieListViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
        btn= findViewById(R.id.button);
+
+       movieListViewModel= new ViewModelProvider(this).get(MovieListViewModel.class);
+
+
        btn.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
@@ -37,6 +47,17 @@ public class MovieListActivity extends AppCompatActivity {
            }
        });
     }
+
+    //observing any data change
+    private void ObserveAnyChange(){
+        movieListViewModel.getMovies().observe(this, new Observer<List<MovieModel>>() {
+            @Override
+            public void onChanged(List<MovieModel> movieModels) {
+                //observing any data chnage
+            }
+        });
+    }
+
 
     private void getRetrofitResponse() {
         MovieApi movieApi= Servicey.getMovieApi();
