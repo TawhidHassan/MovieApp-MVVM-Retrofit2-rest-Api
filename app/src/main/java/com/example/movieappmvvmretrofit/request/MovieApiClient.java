@@ -131,7 +131,7 @@ public class MovieApiClient {
         }
 
         private void cancelRequest(){
-            Log.v("Tag","cancelling search request ");\
+            Log.v("Tag","cancelling search request ");
             cancelRequest=true;
         }
 
