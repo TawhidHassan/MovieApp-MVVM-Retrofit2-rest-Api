@@ -1,6 +1,7 @@
 package com.example.movieappmvvmretrofit;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -35,7 +36,7 @@ public class MovieListActivity extends AppCompatActivity implements OnMovieListe
 
 
     RecyclerView recyclerView;
-
+    androidx.appcompat.widget.SearchView searchView;
     MovieRecyclerViewAdapter  movieRecyclerViewAdapter;
 
     //viewModel
@@ -49,6 +50,9 @@ public class MovieListActivity extends AppCompatActivity implements OnMovieListe
         Toolbar toolbar=findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
 
+        //setup searchView
+        setupsearchView();
+
 
        recyclerView= findViewById(R.id.recyclerView);
 
@@ -61,7 +65,26 @@ public class MovieListActivity extends AppCompatActivity implements OnMovieListe
        //calling the observers
         ObserveAnyChange();
 
-        searchMovieApi("jack",1);
+//        searchMovieApi("jack",1);
+    }
+
+    private void setupsearchView() {
+         searchView=findViewById(R.id.searchViewId);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                //the search string getted from searchView
+                movieListViewModel.searchMovieApi(query,1);
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
     }
 
     //observing any data change
@@ -84,9 +107,9 @@ public class MovieListActivity extends AppCompatActivity implements OnMovieListe
     }
 
     /**4**/
-    private void searchMovieApi(String query,int pageNumber){
-        movieListViewModel.searchMovieApi(query,pageNumber);
-    }
+//    private void searchMovieApi(String query,int pageNumber){
+//        movieListViewModel.searchMovieApi(query,pageNumber);
+//    }
 
     //5-Intializing recyclerView and adding data to it
     private void ConfigerRecyclerView(){
