@@ -3,6 +3,8 @@ package com.example.movieappmvvmretrofit;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +13,8 @@ import android.widget.Button;
 
 import com.example.movieappmvvmretrofit.Utils.Credentials;
 import com.example.movieappmvvmretrofit.Utils.MovieApi;
+import com.example.movieappmvvmretrofit.adapter.MovieRecyclerViewAdapter;
+import com.example.movieappmvvmretrofit.adapter.OnMovieListener;
 import com.example.movieappmvvmretrofit.models.MovieModel;
 import com.example.movieappmvvmretrofit.request.Servicey;
 import com.example.movieappmvvmretrofit.response.MovieSearchResponse;
@@ -23,12 +27,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MovieListActivity extends AppCompatActivity {
+public class MovieListActivity extends AppCompatActivity implements OnMovieListener {
 
      //Sefore we run our app ,we need to add the network security config
 
 
-    Button btn;
+    RecyclerView recyclerView;
+
+    MovieRecyclerViewAdapter  movieRecyclerViewAdapter;
 
     //viewModel
     private MovieListViewModel movieListViewModel;
@@ -38,20 +44,18 @@ public class MovieListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-       btn= findViewById(R.id.button);
+       recyclerView= findViewById(R.id.recyclerView);
 
        movieListViewModel= new ViewModelProvider(this).get(MovieListViewModel.class);
+
+
+        //testing the methods
+        ConfigerRecyclerView();
 
        //calling the observers
         ObserveAnyChange();
 
-       //testing the methods
-       btn.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               searchMovieApi("jack",1);
-           }
-       });
+        searchMovieApi("jack",1);
     }
 
     //observing any data change
@@ -63,7 +67,9 @@ public class MovieListActivity extends AppCompatActivity {
                 if (movieModels!=null){
                     for (MovieModel movieModel:movieModels){
                         //getting the data bin the log
-                        Log.v("Tag","onChanged "+movieModel.getTitle());
+                        Log.v("Tag","onChanged "+movieModel.getRuntime());
+
+                        movieRecyclerViewAdapter.setmMovies(movieModels);
                     }
                 }
 
@@ -76,7 +82,25 @@ public class MovieListActivity extends AppCompatActivity {
         movieListViewModel.searchMovieApi(query,pageNumber);
     }
 
+    //5-Intializing recyclerView and adding data to it
+    private void ConfigerRecyclerView(){
+        //Live Data can,t be passed via the constructor
+        movieRecyclerViewAdapter=new MovieRecyclerViewAdapter(this);
+        recyclerView.setAdapter(movieRecyclerViewAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+
+    }
+
+    @Override
+    public void onMovieClick(int position) {
+
+    }
+
+    @Override
+    public void onCatyegoryClick(String cetegory) {
+
+    }
 
 //    private void getRetrofitResponse() {
 //        MovieApi movieApi= Servicey.getMovieApi();

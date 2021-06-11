@@ -18,6 +18,10 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
      List<MovieModel> mMovies;
      OnMovieListener onMovieListener;
 
+    public MovieRecyclerViewAdapter(OnMovieListener onMovieListener) {
+        this.onMovieListener = onMovieListener;
+    }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -30,18 +34,21 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ((MovieViewHolder)holder).title.setText(mMovies.get(position).getTitle());
         ((MovieViewHolder)holder).releaseDate.setText(mMovies.get(position).getRelease_date());
-        ((MovieViewHolder)holder).duration.setText(mMovies.get(position).getRuntime());
+        ((MovieViewHolder)holder).duration.setText(String.valueOf(mMovies.get(position).getRuntime()));
         //vote avarage is over 10,and our rating bar is over 5 starts: dividing by 2
         ((MovieViewHolder)holder).ratingBar.setRating(mMovies.get(position).getVote_average()/2);
         //ImageView Glide
         Glide.with(((MovieViewHolder) holder).imageView.getContext())
-                .load(mMovies.get(position).getPoster_path())
+                .load("https://image.tmdb.org/t/p/w500/"+mMovies.get(position).getPoster_path())
                 .into(((MovieViewHolder)holder).imageView);
     }
 
     @Override
     public int getItemCount() {
-        return mMovies.size();
+        if (mMovies!=null){
+          return   mMovies.size();
+        }
+        return 0;
     }
 
     public void setmMovies(List<MovieModel> mMovies) {
