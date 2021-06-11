@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.movieappmvvmretrofit.Utils.Credentials;
 import com.example.movieappmvvmretrofit.Utils.MovieApi;
@@ -67,7 +68,7 @@ public class MovieListActivity extends AppCompatActivity implements OnMovieListe
                 if (movieModels!=null){
                     for (MovieModel movieModel:movieModels){
                         //getting the data bin the log
-                        Log.v("Tag","onChanged "+movieModel.getRuntime());
+                        Log.v("Tag","onChanged "+movieModel.getRelease_date());
 
                         movieRecyclerViewAdapter.setmMovies(movieModels);
                     }
@@ -94,7 +95,7 @@ public class MovieListActivity extends AppCompatActivity implements OnMovieListe
 
     @Override
     public void onMovieClick(int position) {
-
+        Toast.makeText(this, "the position"+position, Toast.LENGTH_SHORT).show();
     }
 
     @Override

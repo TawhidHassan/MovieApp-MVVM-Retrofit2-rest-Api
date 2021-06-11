@@ -34,7 +34,7 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ((MovieViewHolder)holder).title.setText(mMovies.get(position).getTitle());
         ((MovieViewHolder)holder).releaseDate.setText(mMovies.get(position).getRelease_date());
-        ((MovieViewHolder)holder).duration.setText(String.valueOf(mMovies.get(position).getRuntime()));
+        ((MovieViewHolder)holder).duration.setText("lang: "+mMovies.get(position).getOriginal_language());
         //vote avarage is over 10,and our rating bar is over 5 starts: dividing by 2
         ((MovieViewHolder)holder).ratingBar.setRating(mMovies.get(position).getVote_average()/2);
         //ImageView Glide
