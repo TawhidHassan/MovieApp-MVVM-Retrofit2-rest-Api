@@ -1,5 +1,6 @@
 package com.example.movieappmvvmretrofit;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
@@ -66,6 +67,29 @@ public class MovieListActivity extends AppCompatActivity implements OnMovieListe
         ObserveAnyChange();
 
 //        searchMovieApi("jack",1);
+
+        /**RecyclerView pagination
+         *
+         * loading next page of api response
+         * **/
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (!recyclerView.canScrollHorizontally(1)){
+                    //here we need to display the next search results on the next page of api
+                   movieListViewModel.SearchNextPage();
+                }
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+
+
+
     }
 
     private void setupsearchView() {
