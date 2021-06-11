@@ -55,4 +55,14 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.
         this.mMovies = mMovies;
         notifyDataSetChanged();
     }
+
+    //geting the id of the movie clicked
+    public MovieModel getselected(int position){
+        if (mMovies!=null){
+            if (mMovies.size()>0){
+                return mMovies.get(position);
+            }
+        }
+        return null;
+    }
 }
