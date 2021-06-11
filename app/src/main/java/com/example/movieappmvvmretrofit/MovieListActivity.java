@@ -1,6 +1,7 @@
 package com.example.movieappmvvmretrofit;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -44,6 +45,10 @@ public class MovieListActivity extends AppCompatActivity implements OnMovieListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Toolbar toolbar=findViewById(R.id.toolBar);
+        setSupportActionBar(toolbar);
+
 
        recyclerView= findViewById(R.id.recyclerView);
 
